@@ -1,13 +1,25 @@
 cmake_minimum_required(VERSION 3.5)
 project(needle C CXX)
-cmake_policy(SET CMP0146 OLD)
+# cmake_policy(SET CMP0146 OLD)
 
+set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda-11.8")
 # find correct version of Python
-execute_process(COMMAND python3-config --prefix
-  OUTPUT_VARIABLE Python_ROOT_DIR)
-find_package(Python COMPONENTS Development Interpreter REQUIRED)
+# execute_process(COMMAND python3-config --prefix
+#   OUTPUT_VARIABLE Python_ROOT_DIR)
+set(Python_ROOT_DIR "/home/tangyue/.miniconda3/envs/dlsys")
+set(Python_FOUND TRUE)
+set(Python_EXECUTABLE "/home/tangyue/.miniconda3/envs/dlsys/bin/python")
+set(Python_INCLUDE_DIRS "/home/tangyue/.miniconda3/envs/dlsys/include/python3.12")
+set(Python_LIBRARIES "/home/tangyue/.miniconda3/envs/dlsys/lib/libpython3.12.so")
+set(Python_VERSION "3.12.3")
+# set(Python3_ROOT "$ENV{CONDA_PREFIX}")
+# set(Python_FIND_VIRTUALENV FIRST)
+# find_package(Python COMPONENTS Development Interpreter REQUIRED)
 include_directories(${Python_INCLUDE_DIRS})
-
+message(STATUS ${Python_INCLUDE_DIRS})
+message(STATUS ${Python_ROOT_DIR})
+message(STATUS ${Python_LIBRARIES})
+message(STATUS ${Python_VERSION})
 # find pybind
 execute_process(COMMAND python3 -m pybind11 --cmakedir
   RESULT_VARIABLE __pybind_exit_code

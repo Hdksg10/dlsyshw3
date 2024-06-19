@@ -1,0 +1,6 @@
+{
+    "clangd.fallbackFlags": ["-I/home/tangyue/.miniconda3/envs/dlsys/include/python3.12", "-I/home/tangyue/.miniconda3/envs/dlsys/lib/python3.12/site-packages/pybind11/include", "-I/usr/local/cuda-11.8/include", "--cuda-path=/usr/local/cuda-11.8"],
+    "python.analysis.extraPaths": [
+        "./python"
+    ]
+}

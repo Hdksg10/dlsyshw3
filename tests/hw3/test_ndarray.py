@@ -1,6 +1,9 @@
 import numpy as np
 import pytest
 import mugrade
+import sys
+sys.path.append('/home/tangyue/ai-project/dlsys/dlsyshw3/python')
+
 import needle as ndl
 from needle import backend_ndarray as nd
 

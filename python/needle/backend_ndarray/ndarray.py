@@ -247,6 +247,12 @@ class NDArray:
         """
 
         ### BEGIN YOUR SOLUTION
+        if self.size != prod(new_shape):
+            raise ValueError(f"new shape {new_shape} has size {prod(new_shape)} does not match original shape {self.shape} and size {self.size}")
+        if not self.is_compact:
+            raise ValueError("array is not compact")
+        
+        return NDArray.make(new_shape, strides=None, device=self._device, handle=self._handle, offset=self._offset)
         raise NotImplementedError()
         ### END YOUR SOLUTION
 
@@ -272,6 +278,12 @@ class NDArray:
         """
 
         ### BEGIN YOUR SOLUTION
+        if len(new_axes) != self.ndim:
+            raise ValueError(f"new axes length does not match dim{self.ndim}")
+        
+        new_shape = tuple(self._shape[i] for i in new_axes)
+        new_strides = tuple(self._strides[i] for i in new_axes)
+        return NDArray.make(new_shape, strides=new_strides, device=self._device, handle=self._handle, offset=self._offset)
         raise NotImplementedError()
         ### END YOUR SOLUTION
 
@@ -296,6 +308,14 @@ class NDArray:
         """
 
         ### BEGIN YOUR SOLUTION
+        if len(new_shape) != self.ndim:
+            raise ValueError(f"new shape length does not match dim{self.ndim}")
+        new_strides = list(self._strides)
+        for i, _ in enumerate(self._shape):
+            if self._shape[i] == 1:
+                new_strides[i] = 0
+        new_strides = tuple(new_strides)
+        return self.make(new_shape, new_strides, self._device, self._handle, self._offset)
         raise NotImplementedError()
         ### END YOUR SOLUTION
 
@@ -363,6 +383,16 @@ class NDArray:
         assert len(idxs) == self.ndim, "Need indexes equal to number of dimensions"
 
         ### BEGIN YOUR SOLUTION
+        new_shape = []
+        new_strides = []
+        new_offset = self._offset
+        for i, idx in enumerate(idxs):
+            new_shape.append((idx.stop - idx.start) // idx.step + ((idx.stop - idx.start) % idx.step != 0))
+            new_strides.append(idx.step * self._strides[i])
+            new_offset += idx.start * self._strides[i]
+        new_shape = tuple(new_shape)
+        new_strides = tuple(new_strides)
+        return NDArray.make(new_shape, new_strides, self._device, self._handle, new_offset)
         raise NotImplementedError()
         ### END YOUR SOLUTION
 
